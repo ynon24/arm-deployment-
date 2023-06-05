@@ -1,0 +1,26 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  name: default
+
+steps:
+- task: AzureResourceGroupDeployment@2
+  displayName: 'Deploy ARM Template'
+  inputs:
+    azureSubscription: 'new-service-connection'
+    resourceGroupName: 'myResourceGroup'
+    location: 'West Europe'
+    csmFile: 'linuxServerTemplate.json'
+    deploymentMode: 'Incremental'
+    timeoutInMinutes: 5
+
+- script: python transfer.py
+  displayName: 'Run Python Script'
