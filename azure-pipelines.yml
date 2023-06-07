@@ -7,32 +7,11 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- script: |
-    # Step 1: Create, upload, and copy 100 blobs from Storage account A to B
-    # Your script logic here
-    # Replace the placeholder commands with your actual commands
-
-    # Example commands:
-    # az storage blob upload-batch --destination-container dest-container --source /path/to/source-container --pattern "*.txt"
-    # az storage blob copy-batch --destination-container dest-container --source-container source-container --source-path /path/to/source-container --destination-path /path/to/destination-container
-
-    echo "Executing script to create, upload, and copy blobs"
-
-  displayName: 'Create, Upload, and Copy Blobs'
-
-- task: PublishPipelineArtifact@1
+- task: UsePythonVersion@0
   inputs:
-    targetPath: '$(Pipeline.Workspace)'
-    artifactName: 'script-artifact'
+    versionSpec: '3.x'
+    addToPath: true
 
 - script: |
-    # Step 2: Connect to the server and execute the script
-    # Your script logic here
-    # Replace the placeholder commands with your actual commands
-
-    # Example commands:
-    # ssh ynon@40.71.59.146 'python /path/to/script.py'
-
-    echo "Connecting to the server and executing the script"
-
-  displayName: 'Connect to Server and Execute Script'
+    python transfer.py
+  displayName: 'Execute Python Script on Linux Server'
