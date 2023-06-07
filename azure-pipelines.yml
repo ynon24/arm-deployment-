@@ -1,26 +1,38 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
   branches:
     include:
       - main
 
 pool:
-  name: default
+  vmImage: 'ubuntu-latest'
 
 steps:
-- task: AzureResourceGroupDeployment@2
-  displayName: 'Deploy ARM Template'
-  inputs:
-    azureSubscription: 'new-service-connection'
-    resourceGroupName: 'myResourceGroup'
-    location: 'West Europe'
-    csmFile: 'linuxServerTemplate.json'
-    deploymentMode: 'Incremental'
-    timeoutInMinutes: 5
+- script: |
+    # Step 1: Create, upload, and copy 100 blobs from Storage account A to B
+    # Your script logic here
+    # Replace the placeholder commands with your actual commands
 
-- script: python transfer.py
-  displayName: 'Run Python Script'
+    # Example commands:
+    # az storage blob upload-batch --destination-container dest-container --source /path/to/source-container --pattern "*.txt"
+    # az storage blob copy-batch --destination-container dest-container --source-container source-container --source-path /path/to/source-container --destination-path /path/to/destination-container
+
+    echo "Executing script to create, upload, and copy blobs"
+
+  displayName: 'Create, Upload, and Copy Blobs'
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Pipeline.Workspace)'
+    artifactName: 'script-artifact'
+
+- script: |
+    # Step 2: Connect to the server and execute the script
+    # Your script logic here
+    # Replace the placeholder commands with your actual commands
+
+    # Example commands:
+    # ssh ynon@40.71.59.146 'python /path/to/script.py'
+
+    echo "Connecting to the server and executing the script"
+
+  displayName: 'Connect to Server and Execute Script'
